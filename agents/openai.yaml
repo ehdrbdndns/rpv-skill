@@ -1,0 +1,7 @@
+interface:
+  display_name: "RPV"
+  short_description: "Research, plan, verify workflow"
+  default_prompt: "Use $rpv to research, plan, write verification scenarios, and implement only after review gates."
+
+policy:
+  allow_implicit_invocation: false
