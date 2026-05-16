@@ -60,8 +60,12 @@ rpv/
 └── feature-name/
     ├── research.md
     ├── plan.md
-    └── verification-scenarios.md
+    ├── verification-scenarios.md
+    ├── hotfix-issue-name.md
+    └── final-report.md
 ```
+
+`hotfix-*.md`는 검증 중 발견된 좁은 차단 이슈를 기록하는 선택 문서다. 원래 RPV 목표를 달성하기 위해 필요한 최소 수정에만 사용한다.
 
 문서를 만들기 전에 기존 `rpv/` 폴더가 있는지 확인한다. 문서는 사용자 검토용 계약 문서이므로, 임시 메모처럼 숨겨진 위치나 시스템 디렉터리에 저장하지 않는다.
 
@@ -79,9 +83,12 @@ rpv/
 10. 사용자 피드백을 반영한 뒤 구현을 시작한다.
 11. `rpv/plan.md`의 구현 순서에 따라 구현한다.
 12. `rpv/verification-scenarios.md`에 따라 headed Playwright로 수동 검증한다.
-13. 검증 실패 시 구현 단계로 돌아가 원인을 수정한다.
-14. 필수 검증 시나리오가 모두 통과할 때까지 구현과 검증 루프를 반복한다.
-15. 최종 보고를 작성한다.
+13. 검증 실패 시 먼저 실패가 기존 plan 범위 안의 구현 버그인지 판단한다.
+14. 기존 plan 범위 안이면 구현 단계로 돌아가 원인을 수정한다.
+15. 기존 plan 밖의 blocker, contract drift, DB/infra/schema mismatch라면 `hotfix-*.md`를 작성하고 사용자 검토를 받은 뒤 처리한다.
+16. hotfix 적용 후 원래 검증 시나리오로 돌아와 재검증한다.
+17. 필수 검증 시나리오가 모두 통과할 때까지 구현과 검증 루프를 반복한다.
+18. 최종 보고를 작성한다.
 
 각 문서 review gate 이후에는 사용자 피드백을 반영하거나, 사용자가 명시적으로 승인하기 전까지 다음 단계로 넘어가지 않는다.
 
@@ -171,6 +178,9 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 `rpv/plan.md`는 반드시 실제 코드베이스 조사 결과에 근거해야 한다.
 변경 대상 파일, 컴포넌트, 함수, API, 데이터 흐름, 기존 패턴을 구체적으로 적는다.
 추상적인 작업 목록으로 끝내지 말고, 다른 에이전트가 추가 조사 없이 구현을 시작할 수 있을 정도로 파일 경로, 관련 symbol, 데이터 흐름, edge case, 검증 포인트를 상세히 적는다.
+`plan.md`는 파일 경로 목록으로 끝나면 안 된다.
+구현자가 추가 해석 없이 방향을 잡을 수 있도록, 실제 코드베이스의 symbol과 패턴에 근거한 핵심 code shape, 함수 signature, type/interface, query/API 호출 형태, 상태 변경 흐름을 포함한다.
+다만 사용자 승인 전 완성된 production code 전체를 작성하지 않고, 구현 단계에서 코드베이스 스타일에 맞게 조정할 수 있는 implementation sketch 수준으로 작성한다.
 필요한 경우 구현 스케치나 인터페이스 예시는 포함할 수 있지만, 사용자 승인 전 실제 production code를 작성하지 않는다.
 
 포함할 내용:
@@ -202,6 +212,16 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 4. 관련 데이터 흐름/상태/권한:
 5. 구현 전 실제 코드 작성 없이 확인한 근거:
 
+## Implementation Sketches
+1. 추가/변경할 함수 signature:
+2. 주요 type/interface/request/response shape:
+3. 핵심 query/select/include 또는 API 호출 형태:
+4. route/component/service 연결 방식:
+5. 상태 변경, 저장, polling, background job 흐름:
+6. 외부 API payload/config/env 예시:
+7. 에러/edge case 처리의 코드 흐름:
+8. 실제 구현 단계에서 코드베이스 스타일에 맞게 조정해야 할 부분:
+
 ## Implementation Order
 각 단계마다 아래를 적는다.
 
@@ -212,6 +232,7 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 4. 선행 조건/의존성:
 5. 중간 확인 방법:
 6. 건드리지 말아야 할 것:
+7. 핵심 구현 스케치:
 
 ## State, Error, and Edge Handling
 필요한 경우 loading, empty, error, permission, disabled, async, persistence, routing, responsive 상태를 어떻게 처리할지 적는다.
@@ -325,7 +346,78 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 구현이 끝났다는 것은 코드 작성이 끝났다는 뜻이 아니다.
 모든 필수 검증 시나리오와 관련 regression/adjacent scenario가 통과하거나, 사용자가 실패 또는 차단된 시나리오를 명시적으로 수용해야 완료다.
 
-## 7. 최종 보고
+## 7. Hotfix Handling
+
+RPV 진행 중 검증 실패가 기존 `plan.md`의 구현 범위를 벗어난 좁은 차단 이슈를 드러내면 hotfix 흐름을 사용한다.
+
+hotfix를 사용할 수 있는 경우:
+
+1. 실제 검증 중 발견된 blocker.
+2. 외부 API contract drift.
+3. DB column/index/schema mismatch.
+4. infra route, scheduler, secret, env 설정 mismatch.
+5. mobile/backend/infra 간 계약 충돌.
+6. 원래 RPV 목표 달성을 막는 좁은 regression.
+
+hotfix를 사용하면 안 되는 경우:
+
+1. 새 기능 추가.
+2. 원래 scope 확장.
+3. 사용자가 승인하지 않은 production 변경.
+4. 단순 리팩토링.
+5. "하는 김에" 고치는 주변 코드.
+
+hotfix 문서는 같은 RPV 폴더에 `hotfix-issue-name.md` 형식으로 저장한다.
+
+포함할 내용:
+
+```markdown
+# Hotfix: 이름
+
+## Trigger
+1. 어떤 검증, 로그, 테스트, 사용자 확인에서 발견됐는가.
+2. 원래 RPV 목표를 어떻게 막고 있는가.
+
+## Scope
+1. 이번 hotfix에 포함되는 것.
+2. 포함하지 않는 것.
+
+## Root Cause
+1. 확인된 원인.
+2. 추측이면 추측이라고 표시한다.
+
+## Proposed Fix
+1. 수정할 파일/모듈.
+2. 수정 방식.
+3. 기존 plan과 다른 점.
+
+## Safety Constraints
+1. production을 건드리는지 여부.
+2. DB migration 필요 여부.
+3. 사용자 컨펌이 필요한 stop gate.
+4. rollback 방법.
+
+## Verification
+1. hotfix 자체 검증.
+2. 원래 RPV 시나리오 중 다시 돌릴 항목.
+3. 통과 기준.
+
+## Result
+1. 적용 결과.
+2. 재검증 결과.
+3. 원래 RPV 문서에 반영해야 할 내용.
+```
+
+hotfix 규칙:
+
+1. hotfix는 반드시 parent RPV 목표와 연결되어야 한다.
+2. 변경 범위는 blocker 해소에 필요한 최소 범위로 제한한다.
+3. DB, infra, auth, notification, billing, production 관련 hotfix는 사용자 컨펌 stop gate를 둔다.
+4. hotfix 적용 후 `verification-scenarios.md`에 재검증 결과를 반영한다.
+5. hotfix에서 얻은 결정이 원래 계약을 바꾸면 `research.md`, `plan.md`, `verification-scenarios.md` 중 영향을 받는 문서를 갱신한다.
+6. 최종 보고에는 hotfix 목록과 결과를 별도 항목으로 기록한다.
+
+## 8. 최종 보고
 
 최종 보고에는 다음을 포함한다.
 
@@ -344,6 +436,9 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 
 ## Automated Checks
 실행한 명령과 결과.
+
+## Hotfixes
+RPV 중 추가로 발생한 hotfix가 있으면 문서, trigger, root cause, 변경 범위, 검증 결과, 원래 RPV 문서에 반영한 내용을 기록한다.
 
 ## 남은 위험
 남은 risk, blocked scenario, 사용자가 수용한 실패가 있다면 명시한다.
