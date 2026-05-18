@@ -240,7 +240,9 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 필요한 경우 loading, empty, error, permission, disabled, async, persistence, routing, responsive 상태를 어떻게 처리할지 적는다.
 
 ## Automated Checks
-실행할 typecheck, lint, test, build 또는 기타 명령을 적는다.
+실행할 typecheck, targeted lint, test, build 또는 기타 명령을 적는다.
+검증 작업에서 전체 `yarn lint`는 실행하지 않는다.
+대신 변경한 파일/패키지/워크스페이스에 한정된 lint, typecheck, test처럼 blast radius가 작은 검증 명령을 선택한다.
 
 ## Risks and Fallback
 남은 위험과 문제가 생겼을 때 되돌리거나 축소하는 방법을 적는다.
@@ -343,7 +345,7 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 
 각 의미 있는 구현 단위 이후:
 
-1. 관련 있고 저렴한 automated check를 실행한다.
+1. 관련 있고 저렴한 automated check를 실행한다. 검증 작업에서 전체 `yarn lint`는 실행하지 않고, 변경 범위에 맞는 targeted lint/typecheck/test를 사용한다.
 2. 영향을 받는 필수 시나리오를 headed Playwright로 수동 검증한다.
 3. 새 기능이나 수정과 연관될 수 있는 기존 기능, 기존 사용자 흐름, 공유 컴포넌트/API/상태도 계속 정상 동작하는지 검증한다.
 4. `rpv/verification-scenarios.md`에 pass/fail 결과를 기록한다.
