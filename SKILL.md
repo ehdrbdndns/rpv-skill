@@ -40,6 +40,14 @@ description: 사용자가 /rpv를 호출하거나, 구현 전에 research.md, pl
 사용자가 검토하는 `research.md`, `plan.md`, `verification-scenarios.md`, 최종 보고는 항목을 나열할 때 bullet list보다 numbered list를 우선 사용한다.
 체크박스, 파일 트리, 코드 블록, 표처럼 numbered list보다 다른 형식이 더 명확한 경우에만 예외로 둔다.
 
+## 코드베이스 분석 도구 규칙
+
+코드 구조, symbol, 참조 관계, 데이터 흐름, 기존 패턴을 분석할 때는 Serena MCP를 우선이 아니라 필수 도구로 사용한다.
+Serena MCP가 사용 가능한 환경에서는 `get_symbols_overview`, `find_symbol`, `find_referencing_symbols`, `search_for_pattern` 같은 semantic/symbolic 도구로 먼저 범위를 좁힌다.
+파일 전체를 무작정 읽거나 grep 결과만으로 구조를 판단하지 않는다.
+필요한 symbol과 주변 맥락을 Serena MCP로 좁힌 뒤, 부족한 부분만 `rg`, `sed`, `cat` 같은 일반 파일 읽기 도구로 보완한다.
+Serena MCP를 사용할 수 없는 환경이라면 그 이유를 `research.md`의 `Unknowns` 또는 `Facts`에 명시하고, 어떤 대체 근거로 코드 구조를 확인했는지 적는다.
+
 ## 문서 저장 위치
 
 `/rpv` 실행 중 생성되는 문서는 현재 작업 루트에 `rpv/` 폴더를 만들고 그 안에 저장한다.
@@ -146,6 +154,12 @@ rpv/
 ## Relevant Surfaces
 관련 화면, 라우트, 파일, API, 데이터 흐름, 상태, 권한, 외부 연동, 브라우저 동작, 배포 표면 등을 적는다.
 
+## Codebase Analysis Method
+1. Serena MCP로 확인한 symbols/참조/패턴:
+2. Serena MCP로 좁힌 파일/모듈 범위:
+3. 추가로 사용한 보조 명령:
+4. Serena MCP를 사용할 수 없었다면 이유와 대체 확인 방법:
+
 ## Facts
 코드, 실행 결과, 로그, 문서, 브라우저 관찰, 테스트, 명령 출력으로 확인한 사실만 적는다.
 
@@ -213,6 +227,7 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 3. 관련 함수/컴포넌트/API:
 4. 관련 데이터 흐름/상태/권한:
 5. 구현 전 실제 코드 작성 없이 확인한 근거:
+6. Serena MCP로 확인한 symbol/참조 관계:
 
 ## Implementation Sketches
 1. 추가/변경할 함수 signature:
