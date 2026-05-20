@@ -227,6 +227,7 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 1. Open/Closed Principle(OCP)을 우선한다.
 2. 가능한 한 기존 동작을 직접 수정하기보다, 기존 패턴과 확장 지점을 활용해 backward-compatible하게 확장한다.
 3. 기존 코드 수정이 필요하면 변경 범위와 blast radius를 최소화하고, 왜 직접 수정이 필요한지 적는다.
+4. React Native 앱 기능을 구현할 때는 Maestro 검증에 필요한 핵심 인터랙션 요소의 stable `testID` 계약을 함께 계획한다.
 
 ## Codebase Grounding
 1. 확인한 관련 파일/모듈:
@@ -244,7 +245,8 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 5. 상태 변경, 저장, polling, background job 흐름:
 6. 외부 API payload/config/env 예시:
 7. 에러/edge case 처리의 코드 흐름:
-8. 실제 구현 단계에서 코드베이스 스타일에 맞게 조정해야 할 부분:
+8. React Native 앱 검증에 필요한 `testID`/accessibility id:
+9. 실제 구현 단계에서 코드베이스 스타일에 맞게 조정해야 할 부분:
 
 ## Implementation Order
 각 단계마다 아래를 적는다.
@@ -307,10 +309,13 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 1. 검증 도구:
 2. 실행 환경:
 3. 대상 플랫폼:
-4. 인증/계정 상태:
-5. 저장된 browser/auth state 또는 fresh session 사용 여부:
-6. 외부 서비스, mock/stub, secret/env 의존성:
-7. 현재 환경에서 검증할 수 없는 항목과 이유:
+4. 앱 검증인 경우 선택한 플랫폼: iOS 실기기 | Android 실기기 | iOS + Android 실기기 | N/A
+5. 앱 검증인 경우 device name / OS version / app build:
+6. 앱 검증인 경우 Maestro flow 파일 또는 실행 방법:
+7. 인증/계정 상태:
+8. 저장된 browser/auth state 또는 fresh session 사용 여부:
+9. 외부 서비스, mock/stub, secret/env 의존성:
+10. 현재 환경에서 검증할 수 없는 항목과 이유:
 
 ## User-Requested Scenarios
 사용자가 명시적으로 요청한 검증 시나리오.
@@ -323,25 +328,37 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 사용자-facing 브라우저 동작이 있는 작업은 반드시 headed Playwright로 실제 사용자처럼 클릭, 입력, 이동, 새로고침하며 수동 검증한다.
 별도의 일회성 검증 스크립트로 수동 검증을 대체하지 않는다.
 브라우저 표면이 없는 작업이라면 headed Playwright 검증이 적용 불가한 이유를 명시한다.
+React Native 앱 또는 native flow 검증이 필요한 경우, `verification-scenarios.md` 작성 전에 사용자에게 iOS 실기기, Android 실기기, iOS + Android 실기기 중 어떤 플랫폼에서 검증할지 묻는다.
+사용자가 선택한 플랫폼만 Required 검증 범위로 보고, 선택하지 않은 플랫폼의 남은 위험은 `Excluded Scenarios` 또는 `Risks`에 명시한다.
+React Native 앱의 공식 검증은 Maestro와 실기기를 사용한다.
+에뮬레이터/시뮬레이터는 개발 중 보조 확인에는 사용할 수 있지만, RPV 필수 시나리오의 최종 pass evidence로 사용하지 않는다.
+실기기 검증이 불가능하면 해당 scenario는 Passed가 아니라 Blocked로 기록하고, 이유와 필요한 장비/상태를 남긴다.
+Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id, id selector, 필요한 경우 text selector를 우선 사용한다.
+좌표 기반 tap/swipe는 selector, `testID`, deep link, `scrollUntilVisible`로 표현할 수 없는 경우에만 마지막 fallback으로 사용하고, 사용 이유를 기록한다.
+긴 navigation이나 반복 스크롤은 가능하면 deep link, seeded state, `scrollUntilVisible`로 대체한다.
 
 ## Scenario Details
 
 ### Scenario N: 이름
 1. Source: User-requested | AI-proposed
 2. Priority: Required | Recommended | Optional
-3. Start state:
-4. Browser/auth state:
-5. Viewport:
-6. Steps:
-7. Expected result:
-8. Observable evidence:
-9. Console/network checks:
-10. Refresh/back-navigation checks:
-11. Pass/fail criteria:
-12. Status: Pending | Passed | Failed | Blocked
-13. Failure observed:
-14. Fix attempted:
-15. Re-check result:
+3. Platform coverage: iOS real device | Android real device | Both real devices | Web | N/A
+4. Start state:
+5. Browser/auth state 또는 device/auth state:
+6. Viewport 또는 device:
+7. Maestro flow 또는 headed Playwright 방법:
+8. 사용한 selector/testID:
+9. 좌표 기반 제스처 사용 여부와 이유:
+10. Steps:
+11. Expected result:
+12. Observable evidence:
+13. Console/network checks:
+14. Refresh/back-navigation checks:
+15. Pass/fail criteria:
+16. Status: Pending | Passed | Failed | Blocked
+17. Failure observed:
+18. Fix attempted:
+19. Re-check result:
 
 ## Excluded Scenarios
 이번 범위에서 검증하지 않는 시나리오와 그 이유.
