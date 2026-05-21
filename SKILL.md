@@ -1,6 +1,6 @@
 ---
 name: rpv
-description: 사용자가 /rpv를 호출하거나, 구현 전에 research.md, plan.md, verification-scenarios.md를 작성하고 사용자 검토를 거친 뒤 개발하길 원할 때 사용한다. 이 스킬은 AI가 의도를 추측해 구현하지 않도록 상세한 조사 문서, 구현 계획 문서, 검증 시나리오 문서를 먼저 만들고, headed manual verification이 모두 통과할 때까지 구현과 검증을 반복한다.
+description: 사용자가 /rpv를 호출하거나, 구현 전에 research.md, plan.md, verification-scenarios.md를 작성하고 사용자 검토를 거친 뒤 개발하길 원할 때 사용한다. 이 스킬은 AI가 의도를 추측해 구현하지 않도록 상세한 조사 문서, 구현 계획 문서, 검증 시나리오 문서를 먼저 만들고, manual verification이 모두 통과할 때까지 구현과 검증을 반복한다.
 ---
 
 # RPV: Research, Plan, Verify
@@ -84,19 +84,18 @@ rpv/
 3. 멈추고 사용자에게 `rpv/research.md` 검토를 요청한다.
 4. 사용자가 정확히 `승인`이라고 말하면 `rpv/plan.md`를 작성한다. 피드백이 있으면 반영한 뒤 다시 `승인`을 기다린다.
 5. 멈추고 사용자에게 `rpv/plan.md` 검토를 요청한다.
-6. 사용자 피드백을 반영한다.
-7. 사용자가 원하는 검증 시나리오가 있는지 묻는다.
-8. `rpv/verification-scenarios.md`를 작성한다.
-9. 멈추고 사용자에게 `rpv/verification-scenarios.md` 검토를 요청한다.
-10. 사용자가 정확히 `승인`이라고 말하면 구현을 시작한다. 피드백이 있으면 반영한 뒤 다시 `승인`을 기다린다.
-11. `rpv/plan.md`의 구현 순서에 따라 구현한다.
-12. `rpv/verification-scenarios.md`에 따라 headed Playwright로 수동 검증한다.
-13. 검증 실패 시 먼저 실패가 기존 plan 범위 안의 구현 버그인지 판단한다.
-14. 기존 plan 범위 안이면 구현 단계로 돌아가 원인을 수정한다.
-15. 기존 plan 밖의 blocker, contract drift, DB/infra/schema mismatch라면 `hotfix-*.md`를 작성하고 사용자 검토를 받은 뒤 처리한다.
-16. hotfix 적용 후 원래 검증 시나리오로 돌아와 재검증한다.
-17. 필수 검증 시나리오가 모두 통과할 때까지 구현과 검증 루프를 반복한다.
-18. 최종 보고를 작성한다.
+6. 사용자가 정확히 `승인`이라고 말하면 사용자가 원하는 검증 시나리오가 있는지 묻는다. 피드백이 있으면 반영한 뒤 다시 `승인`을 기다린다.
+7. `rpv/verification-scenarios.md`를 작성한다.
+8. 멈추고 사용자에게 `rpv/verification-scenarios.md` 검토를 요청한다.
+9. 사용자가 정확히 `승인`이라고 말하면 구현을 시작한다. 피드백이 있으면 반영한 뒤 다시 `승인`을 기다린다.
+10. `rpv/plan.md`의 구현 순서에 따라 구현한다.
+11. `rpv/verification-scenarios.md`에 정한 검증 도구와 환경에 따라 수동 검증한다.
+12. 검증 실패 시 먼저 실패가 기존 plan 범위 안의 구현 버그인지 판단한다.
+13. 기존 plan 범위 안이면 구현 단계로 돌아가 원인을 수정한다.
+14. 기존 plan 밖의 blocker, contract drift, DB/infra/schema mismatch라면 `hotfix-*.md`를 작성하고 사용자 검토를 받은 뒤 처리한다.
+15. hotfix 적용 후 원래 검증 시나리오로 돌아와 재검증한다.
+16. 필수 검증 시나리오가 모두 통과할 때까지 구현과 검증 루프를 반복한다.
+17. 최종 보고를 작성한다.
 
 각 문서 review gate 이후에는 사용자 피드백을 반영하거나, 사용자가 정확히 `승인`이라고 말하기 전까지 다음 단계로 넘어가지 않는다.
 `좋아`, `괜찮아`, `계속해`, `진행해`, `LGTM`처럼 긍정적이지만 `승인`이라는 단어가 없는 표현은 다음 단계 진행 승인으로 간주하지 않는다.
@@ -202,12 +201,9 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 다른 에이전트가 이 문서만 보고도 제품 의도, 데이터 동작, UI 동작, 검증 기대값을 추측하지 않고 구현할 수 있을 만큼 자세해야 한다.
 
 `rpv/plan.md`는 반드시 실제 코드베이스 조사 결과에 근거해야 한다.
-변경 대상 파일, 컴포넌트, 함수, API, 데이터 흐름, 기존 패턴을 구체적으로 적는다.
-추상적인 작업 목록으로 끝내지 말고, 다른 에이전트가 추가 조사 없이 구현을 시작할 수 있을 정도로 파일 경로, 관련 symbol, 데이터 흐름, edge case, 검증 포인트를 상세히 적는다.
-`plan.md`는 파일 경로 목록으로 끝나면 안 된다.
-구현자가 추가 해석 없이 방향을 잡을 수 있도록, 실제 코드베이스의 symbol과 패턴에 근거한 핵심 code shape, 함수 signature, type/interface, query/API 호출 형태, 상태 변경 흐름을 포함한다.
-다만 사용자 승인 전 완성된 production code 전체를 작성하지 않고, 구현 단계에서 코드베이스 스타일에 맞게 조정할 수 있는 implementation sketch 수준으로 작성한다.
-필요한 경우 구현 스케치나 인터페이스 예시는 포함할 수 있지만, 사용자 승인 전 실제 production code를 작성하지 않는다.
+파일 경로 목록이나 추상적인 작업 목록으로 끝내지 말고, 다른 에이전트가 추가 조사 없이 구현 방향을 잡을 수 있을 정도로 관련 파일, symbol, 기존 패턴, 데이터 흐름, edge case, 검증 포인트를 상세히 적는다.
+핵심 code shape, 함수 signature, type/interface, query/API 호출 형태, 상태 변경 흐름은 implementation sketch 수준으로 포함한다.
+다만 사용자 승인 전 완성된 production code 전체를 작성하지 않는다.
 
 포함할 내용:
 
@@ -331,7 +327,7 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 ## Manual Verification Method
 사용자-facing 브라우저 동작이 있는 작업은 반드시 headed Playwright로 실제 사용자처럼 클릭, 입력, 이동, 새로고침하며 수동 검증한다.
 별도의 일회성 검증 스크립트로 수동 검증을 대체하지 않는다.
-브라우저 표면이 없는 작업이라면 headed Playwright 검증이 적용 불가한 이유를 명시한다.
+브라우저 표면이 없고 React Native 앱 또는 native flow 검증 대상도 아니라면 headed Playwright 검증이 적용 불가한 이유를 명시한다.
 React Native 앱 또는 native flow 검증이 필요한 경우, `verification-scenarios.md` 작성 전에 사용자에게 iOS 실기기, Android 실기기, iOS + Android 실기기 중 어떤 플랫폼에서 검증할지 묻는다.
 사용자가 선택한 플랫폼만 Required 검증 범위로 보고, 선택하지 않은 플랫폼의 남은 위험은 `Excluded Scenarios` 또는 `Risks`에 명시한다.
 React Native 앱의 공식 검증은 Maestro와 실기기를 사용한다.
@@ -379,21 +375,18 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 ```
 
 작성 후 사용자에게 검증 시나리오 검토를 요청한다.
-사용자 피드백이 반영되거나 명시적 승인이 있기 전에는 구현하지 않는다.
+사용자 피드백이 반영되고 사용자가 정확히 `승인`이라고 말하기 전에는 구현하지 않는다.
 
-## 5. Headed Playwright / Browser/Auth State 관리
+## 5. Manual Verification / Session State 관리
 
-사용자-facing 브라우저 동작은 반드시 headed Playwright로 수동 검증한다.
-
-일회성 검증 스크립트를 먼저 작성하지 않는다. 사용자가 실제로 하듯이 브라우저를 열고, 클릭하고, 입력하고, 이동하고, 새로고침하며 확인한다.
-브라우저 표면이 없는 작업은 `rpv/verification-scenarios.md`에 headed Playwright 검증이 적용 불가한 이유를 적는다.
+수동 검증 도구와 환경은 `rpv/verification-scenarios.md`의 `Verification Environment`와 `Manual Verification Method`를 따른다.
 
 반복 검증 효율을 위해 저장된 browser/auth state를 재사용한다.
 
-- 역할이나 계정 조건이 다르면 별도 state를 사용한다.
-- state 이름은 사람 이름이 아니라 목적 기준으로 붙인다.
-- 로그인, 온보딩, 로그아웃, 인증 전환, 권한 경계, 첫 실행 경험을 검증할 때는 fresh session을 사용한다.
-- 저장된 state가 오래되었거나 버그를 숨길 수 있으면 새로 만든다.
+1. 역할이나 계정 조건이 다르면 별도 state를 사용한다.
+2. state 이름은 사람 이름이 아니라 목적 기준으로 붙인다.
+3. 로그인, 온보딩, 로그아웃, 인증 전환, 권한 경계, 첫 실행 경험을 검증할 때는 fresh session을 사용한다.
+4. 저장된 state가 오래되었거나 버그를 숨길 수 있으면 새로 만든다.
 
 ## 6. 구현과 검증 루프
 
@@ -402,7 +395,7 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 각 의미 있는 구현 단위 이후:
 
 1. 관련 있고 저렴한 automated check를 실행한다. 검증 작업에서 전체 `yarn lint`는 실행하지 않고, 변경 범위에 맞는 targeted lint/typecheck/test를 사용한다.
-2. 영향을 받는 필수 시나리오를 headed Playwright로 수동 검증한다.
+2. 영향을 받는 필수 시나리오를 `rpv/verification-scenarios.md`에 정한 도구로 수동 검증한다. 웹은 headed Playwright, React Native/native 앱은 선택된 실기기에서 Maestro를 사용한다.
 3. 새 기능이나 수정과 연관될 수 있는 기존 기능, 기존 사용자 흐름, 공유 컴포넌트/API/상태도 계속 정상 동작하는지 검증한다.
 4. `rpv/verification-scenarios.md`에 pass/fail 결과를 기록한다.
 5. 필수 시나리오가 실패하면 관찰된 실패를 기록한다.
@@ -500,8 +493,8 @@ hotfix 규칙:
 ## 검증 결과
 실행한 verification scenario와 pass/fail 결과.
 
-## Browser/Auth State
-검증에 사용한 저장 state 또는 fresh session 정보.
+## Browser/Device/Auth State
+검증에 사용한 browser/auth state, device/auth state, fresh session 정보를 적는다.
 
 ## Automated Checks
 실행한 명령과 결과.
