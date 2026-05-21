@@ -102,6 +102,8 @@ rpv/
 사용자 메시지에 `승인`이 포함되어 있더라도 조건, 질문, 수정 요청이 함께 있으면 먼저 그 내용을 반영하고 다시 review gate를 연다.
 각 문서의 `Review Questions`에는 질문만 적지 말고, 왜 이 질문이 필요한지와 답변이 다음 단계에 어떤 결정을 만들거나 막는지 함께 적는다.
 사용자가 `Review Questions`에 답변하면, 답변 내용을 해당 문서의 적절한 섹션에 반영한 뒤 해결된 질문은 `Review Questions`에서 제거한다.
+답변을 반영하는 과정에서 새로운 미확정 결정, blocker, scope 변화, 검증 공백이 드러나면 새 `Review Questions` 항목을 추가한다.
+새 질문이 생긴 경우 해당 문서의 review gate를 다시 열고, 사용자가 정확히 `승인`이라고 말하기 전까지 다음 단계로 넘어가지 않는다.
 `Review Questions`에는 아직 답변되지 않았거나 다음 단계 진행을 막는 질문만 남긴다.
 
 검증 실패가 `rpv/research.md`, `rpv/plan.md`, `rpv/verification-scenarios.md`의 오류나 누락을 드러내면, 해당 문서를 수정하고 사용자 검토를 다시 요청한 뒤 계속한다.
@@ -185,6 +187,7 @@ rpv/
 ## Review Questions
 plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 답변된 질문은 답변을 `User Intake`, `Facts`, `Unknowns`, `Risks`, `Likely Change Points` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변 때문에 새로운 unknown, risk, likely change point가 드러나면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
 ### Question N: 질문
@@ -273,6 +276,7 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 ## Review Questions
 구현 전에 사용자에게 승인받아야 할 결정을 적는다.
 답변된 질문은 답변을 `Scope`, `Non-Goals`, `Implementation Strategy`, `Implementation Order`, `Risks and Fallback` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변 때문에 새로운 구현 결정, scope 경계, fallback 결정이 필요해지면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
 ### Question N: 질문
@@ -367,6 +371,7 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 ## Review Questions
 검증 범위나 우선순위에 대해 사용자에게 확인할 질문.
 답변된 질문은 답변을 `Verification Environment`, `Scenario Details`, `Excluded Scenarios` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변 때문에 새로운 검증 환경, 플랫폼 범위, regression/adjacent scenario 결정이 필요해지면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
 ### Question N: 질문
