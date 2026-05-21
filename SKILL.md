@@ -309,8 +309,8 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 1. 검증 도구:
 2. 실행 환경:
 3. 대상 플랫폼:
-4. 앱 검증인 경우 선택한 플랫폼: iOS 실기기 | Android 실기기 | iOS + Android 실기기 | N/A
-5. 앱 검증인 경우 device name / OS version / app build:
+4. 앱 검증인 경우 선택한 플랫폼: iOS 시뮬레이터 | Android 실기기 | iOS 시뮬레이터 + Android 실기기 | N/A
+5. 앱 검증인 경우 simulator/device name / OS version / app build:
 6. 앱 검증인 경우 Maestro flow 파일 또는 실행 방법:
 7. 인증/계정 상태:
 8. 저장된 browser/auth state 또는 fresh session 사용 여부:
@@ -328,11 +328,12 @@ research와 plan을 바탕으로 AI가 추가 제안한 시나리오.
 사용자-facing 브라우저 동작이 있는 작업은 반드시 headed Playwright로 실제 사용자처럼 클릭, 입력, 이동, 새로고침하며 수동 검증한다.
 별도의 일회성 검증 스크립트로 수동 검증을 대체하지 않는다.
 브라우저 표면이 없고 React Native 앱 또는 native flow 검증 대상도 아니라면 headed Playwright 검증이 적용 불가한 이유를 명시한다.
-React Native 앱 또는 native flow 검증이 필요한 경우, `verification-scenarios.md` 작성 전에 사용자에게 iOS 실기기, Android 실기기, iOS + Android 실기기 중 어떤 플랫폼에서 검증할지 묻는다.
+React Native 앱 또는 native flow 검증이 필요한 경우, `verification-scenarios.md` 작성 전에 사용자에게 iOS 시뮬레이터, Android 실기기, iOS 시뮬레이터 + Android 실기기 중 어떤 플랫폼에서 검증할지 묻는다.
 사용자가 선택한 플랫폼만 Required 검증 범위로 보고, 선택하지 않은 플랫폼의 남은 위험은 `Excluded Scenarios` 또는 `Risks`에 명시한다.
-React Native 앱의 공식 검증은 Maestro와 실기기를 사용한다.
-에뮬레이터/시뮬레이터는 개발 중 보조 확인에는 사용할 수 있지만, RPV 필수 시나리오의 최종 pass evidence로 사용하지 않는다.
-실기기 검증이 불가능하면 해당 scenario는 Passed가 아니라 Blocked로 기록하고, 이유와 필요한 장비/상태를 남긴다.
+React Native 앱의 공식 검증은 Maestro를 사용하며, iOS는 시뮬레이터, Android는 실기기를 기준으로 한다.
+iOS 시뮬레이터는 iOS Required scenario의 최종 pass evidence로 사용할 수 있다.
+Android 에뮬레이터는 개발 중 보조 확인에는 사용할 수 있지만, Android Required scenario의 최종 pass evidence로 사용하지 않는다.
+선택된 플랫폼 검증이 불가능하면 해당 scenario는 Passed가 아니라 Blocked로 기록하고, 이유와 필요한 simulator/device 상태를 남긴다.
 Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id, id selector, 필요한 경우 text selector를 우선 사용한다.
 좌표 기반 tap/swipe는 selector, `testID`, deep link, `scrollUntilVisible`로 표현할 수 없는 경우에만 마지막 fallback으로 사용하고, 사용 이유를 기록한다.
 긴 navigation이나 반복 스크롤은 가능하면 deep link, seeded state, `scrollUntilVisible`로 대체한다.
@@ -342,10 +343,10 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 ### Scenario N: 이름
 1. Source: User-requested | AI-proposed
 2. Priority: Required | Recommended | Optional
-3. Platform coverage: iOS real device | Android real device | Both real devices | Web | N/A
+3. Platform coverage: iOS simulator | Android real device | iOS simulator + Android real device | Web | N/A
 4. Start state:
-5. Browser/auth state 또는 device/auth state:
-6. Viewport 또는 device:
+5. Browser/auth state 또는 simulator/device/auth state:
+6. Viewport 또는 simulator/device:
 7. Maestro flow 또는 headed Playwright 방법:
 8. 사용한 selector/testID:
 9. 좌표 기반 제스처 사용 여부와 이유:
@@ -395,7 +396,7 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 각 의미 있는 구현 단위 이후:
 
 1. 관련 있고 저렴한 automated check를 실행한다. 검증 작업에서 전체 `yarn lint`는 실행하지 않고, 변경 범위에 맞는 targeted lint/typecheck/test를 사용한다.
-2. 영향을 받는 필수 시나리오를 `rpv/verification-scenarios.md`에 정한 도구로 수동 검증한다. 웹은 headed Playwright, React Native/native 앱은 선택된 실기기에서 Maestro를 사용한다.
+2. 영향을 받는 필수 시나리오를 `rpv/verification-scenarios.md`에 정한 도구로 수동 검증한다. 웹은 headed Playwright, React Native/native 앱은 iOS 시뮬레이터 또는 Android 실기기에서 Maestro를 사용한다.
 3. 새 기능이나 수정과 연관될 수 있는 기존 기능, 기존 사용자 흐름, 공유 컴포넌트/API/상태도 계속 정상 동작하는지 검증한다.
 4. `rpv/verification-scenarios.md`에 pass/fail 결과를 기록한다.
 5. 필수 시나리오가 실패하면 관찰된 실패를 기록한다.
@@ -494,7 +495,7 @@ hotfix 규칙:
 실행한 verification scenario와 pass/fail 결과.
 
 ## Browser/Device/Auth State
-검증에 사용한 browser/auth state, device/auth state, fresh session 정보를 적는다.
+검증에 사용한 browser/auth state, simulator/device/auth state, fresh session 정보를 적는다.
 
 ## Automated Checks
 실행한 명령과 결과.
