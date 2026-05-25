@@ -132,8 +132,8 @@ rpv/
 
 ## 2. `rpv/research.md`
 
-`rpv/research.md`는 현재 시스템과 문제를 어떻게 이해했는지 기록하는 문서다.
-다른 에이전트가 읽어도 맥락을 새로 발명하지 않고 이해할 수 있을 만큼 자세해야 한다.
+`rpv/research.md`는 현재 시스템과 문제를 어떻게 이해했는지, 그리고 Goal을 달성하기 위해 무엇을 알아야 하는지 조사한 문서다.
+다른 에이전트가 읽어도 맥락을 새로 발명하지 않고, 필요한 구현 지식과 판단 근거를 다시 조사하지 않아도 될 만큼 자세해야 한다.
 
 포함할 내용:
 
@@ -167,9 +167,14 @@ rpv/
 ## Facts
 코드, 실행 결과, 로그, 문서, 브라우저 관찰, 테스트, 명령 출력으로 확인한 사실만 적는다.
 
+## Required Knowledge for Goal
+Goal을 달성하기 위해 새로 알아야 하는 구현 지식, 도메인 지식, 라이브러리/API 사용법, 플랫폼 제약, 권한/보안/성능 고려사항을 적는다.
+1. 예: QR 코드 기능이라면 생성/스캔/표시 중 무엇이 필요한지, 사용할 수 있는 라이브러리, React Native/iOS/Android 제약, 권한 설정, 기존 화면/상태/API와 연결되는 방식을 조사한다.
+2. 예: 결제 기능이라면 결제 SDK/API, 인증/보안 요구사항, 실패/취소/환불 흐름, 서버 검증 방식, 기존 주문/구독 데이터와 연결되는 방식을 조사한다.
+
 ## Third-Party / Official Docs
-3rd party library, framework, external API, SDK, hosted service가 구현이나 검증에 영향을 줄 수 있으면 공식 문서나 primary source를 확인한다.
-확인한 문서 링크, 관련 버전, 적용해야 할 API/제약/권장 패턴, 현재 코드와의 차이를 적는다.
+Goal을 달성하기 위해 3rd party library, framework, external API, SDK, hosted service, platform capability가 필요할 수 있으면 공식 문서나 primary source를 확인한다.
+확인한 문서 링크, 관련 버전, 필요한 API/설정/권한/제약/권장 패턴, 현재 코드베이스에 적용할 때의 차이를 적는다.
 공식 문서 확인이 불가능하면 그 이유와 대체로 확인한 근거를 적고 `Unknowns`에도 남긴다.
 
 ## Existing Patterns
@@ -186,7 +191,7 @@ rpv/
 
 ## Review Questions
 plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
-답변된 질문은 답변을 `User Intake`, `Facts`, `Unknowns`, `Risks`, `Likely Change Points` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변된 질문은 답변을 `User Intake`, `Facts`, `Required Knowledge for Goal`, `Third-Party / Official Docs`, `Unknowns`, `Risks`, `Likely Change Points` 등 적절한 섹션에 반영한 뒤 제거한다.
 답변 때문에 새로운 unknown, risk, likely change point가 드러나면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
