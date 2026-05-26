@@ -221,66 +221,53 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 ## Goal
 이번 구현으로 달성할 구체적 결과.
 
-## Scope
-이번 작업에 포함되는 것.
+## Scope / Non-Goals
+1. 포함되는 것:
+2. 포함되지 않는 것:
 
-## Non-Goals
-이번 작업에서 하지 않을 것. 의도하지 않은 확장을 막기 위해 자세히 적는다.
-
-## Implementation Strategy
-어떤 접근을 선택했는지, 그리고 왜 기존 시스템에 맞는지 설명한다.
-
-## Implementation Principles
-1. Open/Closed Principle(OCP)을 우선한다.
-2. 가능한 한 기존 동작을 직접 수정하기보다, 기존 패턴과 확장 지점을 활용해 backward-compatible하게 확장한다.
-3. 기존 코드 수정이 필요하면 변경 범위와 blast radius를 최소화하고, 왜 직접 수정이 필요한지 적는다.
-4. React Native 앱 기능을 구현할 때는 Maestro 검증에 필요한 핵심 인터랙션 요소의 stable `testID` 계약을 함께 계획한다.
+## Approach
+1. 선택한 구현 방향:
+2. 기존 코드베이스 패턴과 맞는 이유:
+3. Open/Closed Principle(OCP)과 backward-compatible 확장 방식:
+4. 직접 수정이 필요한 부분과 이유:
 
 ## Codebase Grounding
-1. 확인한 관련 파일/모듈:
-2. 따를 기존 패턴:
-3. 관련 함수/컴포넌트/API:
-4. 관련 데이터 흐름/상태/권한:
-5. 구현 전 실제 코드 작성 없이 확인한 근거:
-6. Serena MCP로 확인한 symbol/참조 관계:
+1. 관련 파일/모듈/symbol:
+2. 기존 패턴:
+3. 데이터 흐름/상태/권한:
+4. Serena MCP로 확인한 근거:
 
-## Implementation Sketches
-1. 추가/변경할 함수 signature:
-2. 주요 type/interface/request/response shape:
-3. 핵심 query/select/include 또는 API 호출 형태:
-4. route/component/service 연결 방식:
-5. 상태 변경, 저장, polling, background job 흐름:
-6. 외부 API payload/config/env 예시:
-7. 에러/edge case 처리의 코드 흐름:
-8. React Native 앱 검증에 필요한 `testID`/accessibility id:
-9. 실제 구현 단계에서 코드베이스 스타일에 맞게 조정해야 할 부분:
+## Implementation Sketch
+1. 함수 signature/type/interface:
+2. query/API 호출 형태:
+3. route/component/service 연결:
+4. 상태 변경/저장/비동기 흐름:
+5. edge/error 처리:
+6. React Native 앱이면 stable `testID`/accessibility id:
+7. 실제 구현 단계에서 코드베이스 스타일에 맞게 조정해야 할 부분:
 
-## Implementation Order
+## Implementation Steps
 각 단계마다 아래를 적는다.
 
 ### Step N: 이름
 1. 변경할 파일/모듈:
-2. 의도한 변경:
-3. 이유:
-4. 선행 조건/의존성:
-5. 중간 확인 방법:
-6. 건드리지 말아야 할 것:
-7. 핵심 구현 스케치:
+2. 변경 내용:
+3. 핵심 구현 스케치:
+4. 중간 확인 방법:
+5. 건드리지 말아야 할 것:
 
-## State, Error, and Edge Handling
-필요한 경우 loading, empty, error, permission, disabled, async, persistence, routing, responsive 상태를 어떻게 처리할지 적는다.
+## Checks and Risks
+1. 실행할 targeted check:
+2. 실행하지 않을 check:
+3. 주요 위험:
+4. fallback:
 
-## Automated Checks
-실행할 typecheck, targeted lint, test, build 또는 기타 명령을 적는다.
 검증 작업에서 전체 `yarn lint`는 실행하지 않는다.
 대신 변경한 파일/패키지/워크스페이스에 한정된 lint, typecheck, test처럼 blast radius가 작은 검증 명령을 선택한다.
 
-## Risks and Fallback
-남은 위험과 문제가 생겼을 때 되돌리거나 축소하는 방법을 적는다.
-
 ## Review Questions
 구현 전에 사용자에게 승인받아야 할 결정을 적는다.
-답변된 질문은 답변을 `Scope`, `Non-Goals`, `Implementation Strategy`, `Implementation Order`, `Risks and Fallback` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변된 질문은 답변을 `Scope / Non-Goals`, `Approach`, `Codebase Grounding`, `Implementation Sketch`, `Implementation Steps`, `Checks and Risks` 등 적절한 섹션에 반영한 뒤 제거한다.
 답변 때문에 새로운 구현 결정, scope 경계, fallback 결정이 필요해지면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
@@ -401,7 +388,7 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 
 ## 6. 구현과 검증 루프
 
-구현은 `rpv/plan.md`의 `Implementation Order`를 따른다.
+구현은 `rpv/plan.md`의 `Implementation Steps`를 따른다.
 
 각 의미 있는 구현 단위 이후:
 
