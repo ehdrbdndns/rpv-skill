@@ -242,17 +242,28 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 ## Implementation Steps
 각 단계마다 아래를 적는다.
+항목 수는 줄이되, 각 항목 안에는 다른 에이전트가 길을 잃지 않고 바로 구현을 이어갈 수 있을 만큼 구체적인 코드베이스 근거와 구현 상세를 적는다.
 
 ### Step N: 이름
-1. 변경할 파일/모듈:
-2. 관련 코드베이스 근거:
-3. 따를 기존 패턴:
-4. 관련 데이터 흐름/상태/권한:
-5. Serena MCP로 확인한 symbol/참조 관계:
-6. 변경 내용:
-7. 핵심 구현 스케치:
-8. 중간 확인 방법:
-9. 건드리지 말아야 할 것:
+1. 목표:
+   이 step이 끝났을 때 달라져야 하는 상태.
+2. 변경할 파일/모듈:
+   실제 파일, symbol, component, hook, service, API, query 단위로 적는다.
+3. 코드베이스 근거:
+   1. Serena MCP로 확인한 symbol/참조 관계:
+   2. 따를 기존 패턴:
+   3. 관련 데이터 흐름/상태/권한:
+   4. 이 위치를 변경하는 이유:
+4. 구현 상세:
+   1. 추가/변경할 함수 signature, type/interface:
+   2. query/API 호출 형태:
+   3. 상태 변경/저장/비동기 흐름:
+   4. edge/error 처리:
+   5. React Native 앱이면 stable `testID`/accessibility id:
+5. 확인 방법:
+   이 step 직후 실행할 targeted check 또는 수동 확인.
+6. 건드리지 말아야 할 것:
+   scope 밖 파일, 기존 동작, 회귀 위험이 큰 부분.
 
 ## Checks and Risks
 1. 실행할 targeted check:
