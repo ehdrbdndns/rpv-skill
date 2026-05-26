@@ -231,12 +231,6 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 3. Open/Closed Principle(OCP)과 backward-compatible 확장 방식:
 4. 직접 수정이 필요한 부분과 이유:
 
-## Codebase Grounding
-1. 관련 파일/모듈/symbol:
-2. 기존 패턴:
-3. 데이터 흐름/상태/권한:
-4. Serena MCP로 확인한 근거:
-
 ## Implementation Sketch
 1. 함수 signature/type/interface:
 2. query/API 호출 형태:
@@ -251,10 +245,14 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 ### Step N: 이름
 1. 변경할 파일/모듈:
-2. 변경 내용:
-3. 핵심 구현 스케치:
-4. 중간 확인 방법:
-5. 건드리지 말아야 할 것:
+2. 관련 코드베이스 근거:
+3. 따를 기존 패턴:
+4. 관련 데이터 흐름/상태/권한:
+5. Serena MCP로 확인한 symbol/참조 관계:
+6. 변경 내용:
+7. 핵심 구현 스케치:
+8. 중간 확인 방법:
+9. 건드리지 말아야 할 것:
 
 ## Checks and Risks
 1. 실행할 targeted check:
@@ -267,7 +265,7 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 ## Review Questions
 구현 전에 사용자에게 승인받아야 할 결정을 적는다.
-답변된 질문은 답변을 `Scope / Non-Goals`, `Approach`, `Codebase Grounding`, `Implementation Sketch`, `Implementation Steps`, `Checks and Risks` 등 적절한 섹션에 반영한 뒤 제거한다.
+답변된 질문은 답변을 `Scope / Non-Goals`, `Approach`, `Implementation Sketch`, `Implementation Steps`, `Checks and Risks` 등 적절한 섹션에 반영한 뒤 제거한다.
 답변 때문에 새로운 구현 결정, scope 경계, fallback 결정이 필요해지면 새 질문을 추가한다.
 각 질문은 아래 형식을 따른다.
 
