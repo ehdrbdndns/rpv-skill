@@ -242,31 +242,25 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 ## Implementation Steps
 각 단계마다 아래를 적는다.
-항목 수는 줄이되, 각 항목 안에는 다른 에이전트가 길을 잃지 않고 바로 구현을 이어갈 수 있을 만큼 구체적인 코드베이스 근거와 코드 작성 방향을 적는다.
-각 step은 변경할 위치만 적지 말고, 실제 코드를 어떤 형태로 작성할지 implementation sketch, pseudocode, 작은 code block 수준으로 함께 적는다.
+각 step은 위치만 나열하지 않고, 코드베이스 근거와 구현 계획을 읽는 사람이 문서 안에서 바로 이해할 수 있게 작성한다.
+코드베이스 근거에는 파일 경로만 적지 말고, 근거가 되는 기존 코드의 짧은 excerpt 또는 code shape와 그 코드가 근거인 이유를 함께 적는다.
+구현 계획에는 이 step에서 코드를 어떤 순서와 형태로 작성할지 상세히 설명하고, 필요한 경우 짧은 code block 또는 pseudocode를 포함한다.
 다만 사용자 승인 전 완성된 production code 전체를 작성하지 말고, 구현자가 방향을 잃지 않을 정도의 핵심 code shape만 적는다.
 
 ### Step N: 이름
 1. 목표:
    이 step이 끝났을 때 달라져야 하는 상태.
-2. 변경할 파일/모듈:
-   실제 파일, symbol, component, hook, service, API, query 단위로 적는다.
-3. 코드베이스 근거:
-   1. Serena MCP로 확인한 symbol/참조 관계:
-   2. 따를 기존 패턴:
-   3. 관련 데이터 흐름/상태/권한:
-   4. 이 위치를 변경하는 이유:
-4. 코드 구현 스케치:
-   1. 이 step에서 작성/변경할 코드의 핵심 shape:
-   2. 추가/변경할 함수 signature, type/interface:
-   3. query/API 호출 형태:
-   4. 상태 변경/저장/비동기 흐름:
-   5. edge/error 처리:
-   6. React Native 앱이면 stable `testID`/accessibility id:
-   7. 필요한 경우 짧은 code block 또는 pseudocode:
-5. 확인 방법:
+2. 코드베이스 근거:
+   실제 파일, symbol, component, hook, service, API, query 단위의 위치와 Serena MCP로 확인한 symbol/참조 관계를 적는다.
+   위치만 적지 말고, 사용자가 문서 안에서 바로 이해할 수 있도록 관련 기존 코드의 짧은 excerpt 또는 code shape를 함께 적는다.
+   따를 기존 패턴, 관련 데이터 흐름/상태/권한, 이 위치를 변경하는 이유를 적는다.
+3. 구현 계획:
+   이 step에서 코드를 어떤 순서와 형태로 작성할지 상세히 적는다.
+   함수 signature, type/interface, query/API 호출, 상태 변경/저장/비동기 흐름, edge/error 처리, React Native 앱이면 stable `testID`/accessibility id를 실제 구현에 가까운 sketch로 포함한다.
+   필요한 경우 짧은 code block 또는 pseudocode를 포함한다.
+4. 확인 방법:
    이 step 직후 실행할 targeted check 또는 수동 확인.
-6. 건드리지 말아야 할 것:
+5. 건드리지 말아야 할 것:
    scope 밖 파일, 기존 동작, 회귀 위험이 큰 부분.
 
 ## Checks and Risks
