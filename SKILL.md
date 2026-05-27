@@ -242,7 +242,9 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 ## Implementation Steps
 각 단계마다 아래를 적는다.
-항목 수는 줄이되, 각 항목 안에는 다른 에이전트가 길을 잃지 않고 바로 구현을 이어갈 수 있을 만큼 구체적인 코드베이스 근거와 구현 상세를 적는다.
+항목 수는 줄이되, 각 항목 안에는 다른 에이전트가 길을 잃지 않고 바로 구현을 이어갈 수 있을 만큼 구체적인 코드베이스 근거와 코드 작성 방향을 적는다.
+각 step은 변경할 위치만 적지 말고, 실제 코드를 어떤 형태로 작성할지 implementation sketch, pseudocode, 작은 code block 수준으로 함께 적는다.
+다만 사용자 승인 전 완성된 production code 전체를 작성하지 말고, 구현자가 방향을 잃지 않을 정도의 핵심 code shape만 적는다.
 
 ### Step N: 이름
 1. 목표:
@@ -254,12 +256,14 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
    2. 따를 기존 패턴:
    3. 관련 데이터 흐름/상태/권한:
    4. 이 위치를 변경하는 이유:
-4. 구현 상세:
-   1. 추가/변경할 함수 signature, type/interface:
-   2. query/API 호출 형태:
-   3. 상태 변경/저장/비동기 흐름:
-   4. edge/error 처리:
-   5. React Native 앱이면 stable `testID`/accessibility id:
+4. 코드 구현 스케치:
+   1. 이 step에서 작성/변경할 코드의 핵심 shape:
+   2. 추가/변경할 함수 signature, type/interface:
+   3. query/API 호출 형태:
+   4. 상태 변경/저장/비동기 흐름:
+   5. edge/error 처리:
+   6. React Native 앱이면 stable `testID`/accessibility id:
+   7. 필요한 경우 짧은 code block 또는 pseudocode:
 5. 확인 방법:
    이 step 직후 실행할 targeted check 또는 수동 확인.
 6. 건드리지 말아야 할 것:
