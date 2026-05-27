@@ -292,16 +292,16 @@ plan 작성 전에 사용자에게 확인받아야 할 질문을 적는다.
 
 사용자가 시나리오를 제공하면:
 
-- 그대로 보존한다.
-- `User-requested`로 표시한다.
-- AI가 제안하는 시나리오는 추가로만 작성한다.
-- 사용자 시나리오를 임의로 재해석하거나 대체하지 않는다.
+1. 그대로 보존한다.
+2. `User-requested`로 표시한다.
+3. AI가 제안하는 시나리오는 추가로만 작성한다.
+4. 사용자 시나리오를 임의로 재해석하거나 대체하지 않는다.
 
 사용자가 별도 시나리오를 제공하지 않으면:
 
-- `rpv/research.md`와 `rpv/plan.md`를 바탕으로 충분히 작은 검증 세트를 작성한다.
-- 상태, 권한, 저장, 라우팅, 비동기 동작, 반응형 UI, 외부 서비스가 관련되면 edge scenario를 포함한다.
-- 새 기능이나 수정과 연관될 수 있는 기존 기능, 기존 사용자 흐름, 공유 컴포넌트/API/상태가 계속 정상 동작하는지 확인하는 regression/adjacent scenario를 포함한다.
+1. `rpv/research.md`와 `rpv/plan.md`를 바탕으로 충분히 작은 검증 세트를 작성한다.
+2. 상태, 권한, 저장, 라우팅, 비동기 동작, 반응형 UI, 외부 서비스가 관련되면 edge scenario를 포함한다.
+3. 새 기능이나 수정과 연관될 수 있는 기존 기능, 기존 사용자 흐름, 공유 컴포넌트/API/상태가 계속 정상 동작하는지 확인하는 regression/adjacent scenario를 포함한다.
 
 포함할 내용:
 
@@ -342,27 +342,36 @@ Maestro flow는 좌표 기반 tap/swipe보다 stable `testID`, accessibility id,
 긴 navigation이나 반복 스크롤은 가능하면 deep link, seeded state, `scrollUntilVisible`로 대체한다.
 
 ## Scenario Details
+Scenario는 긴 flat numbered list로 쓰지 말고 아래처럼 묶어서 작성한다.
+특히 `Steps`에는 실제 검증 절차를 하위 numbered list로 들여써서 Markdown numbering이 깨지지 않게 한다.
 
 ### Scenario N: 이름
-1. Source: User-requested | AI-proposed
-2. Priority: Required | Recommended | Optional
-3. Platform coverage: iOS simulator | Android real device | iOS simulator + Android real device | Web | N/A
-4. Start state:
-5. Browser/auth state 또는 simulator/device/auth state:
-6. Viewport 또는 simulator/device:
-7. Maestro flow 또는 headed Playwright 방법:
-8. 사용한 selector/testID:
-9. 좌표 기반 제스처 사용 여부와 이유:
-10. Steps:
-11. Expected result:
-12. Observable evidence:
-13. Console/network checks:
-14. Refresh/back-navigation checks:
-15. Pass/fail criteria:
-16. Status: Pending | Passed | Failed | Blocked
-17. Failure observed:
-18. Fix attempted:
-19. Re-check result:
+1. Metadata:
+   1. Source: User-requested | AI-proposed
+   2. Priority: Required | Recommended | Optional
+   3. Platform coverage: iOS simulator | Android real device | iOS simulator + Android real device | Web | N/A
+   4. Status: Pending | Passed | Failed | Blocked
+2. Environment:
+   1. Start state:
+   2. Browser/auth state 또는 simulator/device/auth state:
+   3. Viewport 또는 simulator/device:
+   4. Maestro flow 또는 headed Playwright 방법:
+   5. 사용한 selector/testID:
+   6. 좌표 기반 제스처 사용 여부와 이유:
+3. Steps:
+   1. Step 1.
+   2. Step 2.
+   3. Step 3.
+4. Expected Result:
+   1. 기대 결과:
+   2. Observable evidence:
+   3. Console/network checks:
+   4. Refresh/back-navigation checks:
+   5. Pass/fail criteria:
+5. Result:
+   1. Failure observed:
+   2. Fix attempted:
+   3. Re-check result:
 
 ## Excluded Scenarios
 이번 범위에서 검증하지 않는 시나리오와 그 이유.
